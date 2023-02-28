@@ -16,17 +16,19 @@ const imagesHTML = galleryItems.map(({ preview, original, description }) => {
 	event.preventDefault()
 	if (event.target.tagName === 'IMG') {
 		const instance = basicLightbox.create(`
-      <img src="${event.target.dataset.source}" alt="${event.target.alt}">
-    `)
+      <img src="${event.target.dataset.source}" alt="${event.target.alt}">`,
+	  {
+		onClose: instance => {gallery.removeEventListener('keydown', onEscapePress);},
+	  }
+    );
 
     const onEscapePress = (event) => {
       if (event.key === 'Escape') {
 			  instance.close();
-			  document.removeEventListener('keydown', onEscapePress);
 			}
     };
 		instance.show();
-		document.addEventListener('keydown', onEscapePress);
+		gallery.addEventListener('keydown', onEscapePress);
 	};
 });
 
